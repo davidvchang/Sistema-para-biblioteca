@@ -10,7 +10,8 @@ export default {
         "Poppins": ["Poppins", "sans-serif"],
       },
       colors: {
-        "bg-Menu": "#1f2937"
+        "bg-Menu": "#1f2937",
+        "bg-negro": "#282828"
       }
     },
   },

@@ -8,9 +8,9 @@ const Dashboard:React.FC = () => {
       <span className='text-2xl font-semibold'>Dashboard</span>
 
       <div className='flex w-full flex-wrap justify-around'>
-        <CounterInformation text='Libros totales' icon={iconTotalsBook} number={0}/> 
-        <CounterInformation text='Usuarios' icon={iconUsers} number={0}/> 
-        <CounterInformation text='Libros prestados' icon={iconBorrowedBooks} number={0}/> 
+        <CounterInformation text='Libros totales' icon={iconTotalsBook} number={14}/> 
+        <CounterInformation text='Usuarios' icon={iconUsers} number={3}/> 
+        <CounterInformation text='Libros prestados' icon={iconBorrowedBooks} number={1}/> 
         <CounterInformation text='Libros Vencidos' icon={iconClock} number={0}/> 
       </div>
 
