@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SearchInput from '../components/SearchInput'
 import BtnAdd from '../components/BtnAdd'
+import AddBook from './AddBook'
 
 const Books:React.FC = () => {
+
+    const [modalAddBook, setModalAddBook] = useState<Boolean>(false)
+
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
         <SearchInput/>
@@ -11,7 +15,7 @@ const Books:React.FC = () => {
 
         <div className='flex justify-between'>
             <span className='text-xl font-semibold'>Inventario de libros</span>
-            <BtnAdd text='Agregar libro'/>
+            <BtnAdd text='Agregar libro' onClick={() => setModalAddBook(true)}/>
         </div>
 
         <div className="container mx-auto p-4">
@@ -65,8 +69,21 @@ const Books:React.FC = () => {
                 </table>
             </div>
         </div>
+
+        {modalAddBook && (
+            <>
+                {/* PONER BORROSO EL FONDO */}
+                <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-10"></div>
+
+                <div className="fixed inset-0 z-20 flex items-center justify-center">
+                    <AddBook closeModal={() => setModalAddBook(false)} />
+                </div>
+            
+            </>
+        )}
       
     </section>
+
   )
 }
 
