@@ -1,11 +1,55 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchInput from '../components/SearchInput'
 import BtnAdd from '../components/BtnAdd'
 import AddBook from './AddBook'
+import axios from 'axios'
+import Swal from 'sweetalert2'
+
+
+interface ValuesAPI {
+    id_libro: number,
+    titulo: string,
+    autor: string,
+    isbn: string,
+    genero: string,
+    precio: number,
+    stock: number,
+    fecha_publicacion: string,
+    estado: string
+}
 
 const Books:React.FC = () => {
 
-    const [modalAddBook, setModalAddBook] = useState<Boolean>(false)
+    const [modalAddBook, setModalAddBook] = useState<boolean>(false)
+    const [books, setBooks] = useState<ValuesAPI[]>([])
+
+    const urlAPI:string = "http://localhost:4000/api/libros/"
+
+    useEffect(() => {
+        getBooks()
+    }, [modalAddBook])
+
+    const getBooks = async() => {
+        const response = await axios.get(urlAPI)
+        setBooks(response.data)
+    }
+
+    const deleteBook = async (id_libro:number) => {
+        const result = await Swal.fire({
+            title: '¿Estás seguro que deseas eliminar este libro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+        if(result.isConfirmed) {
+            await axios.delete(urlAPI + id_libro)
+            setBooks(books.filter(book => book.id_libro !== id_libro));
+            await getBooks();
+        }
+    }
+    
 
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
@@ -31,39 +75,25 @@ const Books:React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="border-b">
-                            <td className="p-4 flex justify-center">
-                                <img src="https://via.placeholder.com/50" alt="Libro" className="w-14 h-20 object-cover rounded" />
-                            </td>
-                            <td className="p-4 text-center">El Quijote</td>
-                            <td className="p-4 text-center">Miguel de Cervantes</td>
-                            <td className="p-4 text-center">5</td>
-                            <td className="p-4 text-center">
-                                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" >
-                                Editar
-                                </button>
-                                <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" >
-                                Eliminar
-                                </button>
-                            </td>
-                        </tr>
+                        {books.map((book) => (
 
-                        <tr className="border-b">
-                            <td className="p-4 flex justify-center">
-                                <img src="https://via.placeholder.com/50" alt="Libro" className="w-14 h-20 object-cover rounded" />
-                            </td>
-                            <td className="p-4 text-center">El Quijote</td>
-                            <td className="p-4 text-center">Miguel de Cervantes</td>
-                            <td className="p-4 text-center">5</td>
-                            <td className="p-4 text-center">
-                                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" >
-                                Editar
-                                </button>
-                                <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" >
-                                Eliminar
-                                </button>
-                            </td>
-                        </tr>
+                            <tr className="border-b" key={book.id_libro}>
+                                <td className="p-4 flex justify-center">
+                                    <img src="https://via.placeholder.com/50" alt="Libro" className="w-14 h-20 object-cover rounded" />
+                                </td>
+                                <td className="p-4 text-center">{book.titulo}</td>
+                                <td className="p-4 text-center">{book.autor}</td>
+                                <td className="p-4 text-center">{book.stock}</td>
+                                <td className="p-4 text-center">
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" >
+                                    Editar
+                                    </button>
+                                    <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" onClick={() => deleteBook(book.id_libro)}>
+                                    Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                     
                     </tbody>
                 </table>

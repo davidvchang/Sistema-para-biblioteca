@@ -1,0 +1,5 @@
+{
+    "editor.fontLigatures": true,
+    "terminal.integrated.fontLigatures": true,
+    "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace"
+}

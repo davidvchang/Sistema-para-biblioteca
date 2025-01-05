@@ -20,6 +20,8 @@ interface DataBooks {
 
 const AddBook:React.FC<ToggleModal> = ({closeModal}) => {
 
+    const urlAPI:string = "http://localhost:4000/api/libros"
+
     const initialValues:DataBooks = {
         titulo:"",
         autor: "",
@@ -43,7 +45,7 @@ const AddBook:React.FC<ToggleModal> = ({closeModal}) => {
 
         const newBook = {...dataBooks}
 
-        await axios.post("http://localhost:4000/api/libros", newBook);
+        await axios.post(urlAPI, newBook);
         
         Swal.fire({
             title: 'Exito',
