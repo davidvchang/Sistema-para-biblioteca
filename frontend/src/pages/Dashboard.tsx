@@ -1,14 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CounterInformation from '../components/CounterInformation'
 import RecentActivity from '../components/RecentActivity'
+import axios from 'axios'
 
 const Dashboard:React.FC = () => {
+
+  const urlAPI:string = "http://localhost:4000/api/libros/"
+
+  const [numberBooks, setNumberBooks] = useState<number>(0)
+
+  useEffect(() => {
+    getBooksNumber()
+  }, [])
+
+  const getBooksNumber = async () => {
+    const response = await axios.get(urlAPI)
+    const quantityBooks = response.data.length;
+    setNumberBooks(quantityBooks)
+  }
+  
+
+
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
       <span className='text-2xl font-semibold'>Dashboard</span>
 
       <div className='flex w-full flex-wrap justify-around'>
-        <CounterInformation text='Libros totales' icon={iconTotalsBook} number={14}/> 
+        <CounterInformation text='Libros totales' icon={iconTotalsBook} number={numberBooks}/> 
         <CounterInformation text='Usuarios' icon={iconUsers} number={3}/> 
         <CounterInformation text='Libros prestados' icon={iconBorrowedBooks} number={1}/> 
         <CounterInformation text='Libros Vencidos' icon={iconClock} number={0}/> 
