@@ -41,14 +41,14 @@ export const deleteBook = async (req, res) => {
     try {
         const existBook = await pool.query("SELECT COUNT(*) FROM libros WHERE id_libro = $1", [id_libro])
         if(existBook.rows[0].count > 0) {
-            const book = await pool.query("DELETE FROM libros WHERE id_libro = $1", [id_libro])
+            await pool.query("DELETE FROM libros WHERE id_libro = $1", [id_libro])
             res.status(200).send("Se ha eliminado correctamente");
         }
         else{
             res.status(404).send("No se ha encontrado ningun libro");
         }
     } catch (ex) {
-        
+        console.log('Ha ocurrido un error al eliminar el libro: ' + ex)
     }
 }
 
@@ -65,6 +65,6 @@ export const updateBook = async (req, res) => {
             res.status(404).send("No se ha encontrado ningun libro");
         }
     } catch (ex) {
-        
+        console.log('Ha ocurrido un error al eliminar el libro: ' + ex)
     }
 }
