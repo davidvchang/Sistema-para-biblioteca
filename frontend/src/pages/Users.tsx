@@ -3,6 +3,7 @@ import SearchInput from '../components/SearchInput'
 import BtnAdd from '../components/BtnAdd'
 import AddUser from './AddUser'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 interface ValuesAPI {
     id_usuario: number,
@@ -26,6 +27,22 @@ const Users:React.FC = () => {
     const getUsers = async () => {
         const res = await axios.get(urlAPI)
         setUsers(res.data)
+    }
+
+    const deleteBook = async (id_usuario:number) => {
+        const result = await Swal.fire({
+            title: '¿Estás seguro que deseas eliminar este usuario?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+        if(result.isConfirmed) {
+            await axios.delete(urlAPI + id_usuario)
+            setUsers(users.filter(user => user.id_usuario !== id_usuario));
+            await getUsers();
+        }
     }
     
 
@@ -63,7 +80,7 @@ const Users:React.FC = () => {
                                     <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" >
                                     Editar
                                     </button>
-                                    <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" >
+                                    <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" onClick={() => deleteBook(user.id_usuario)}>
                                     Eliminar
                                     </button>
                                 </td>

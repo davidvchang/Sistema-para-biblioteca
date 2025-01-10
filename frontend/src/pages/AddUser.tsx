@@ -9,7 +9,7 @@ interface ToggleModal {
 interface DataUsers {
     nombre: string,
     apellidos: string,
-    correo: string,
+    email: string,
     telefono: string,
 }
 
@@ -19,9 +19,9 @@ const AddUser:React.FC<ToggleModal> = ({closeModal}) => {
     const urlAPI:string = import.meta.env.VITE_URL_API_USERS || ""
 
     const initialValues:DataUsers = {
-        nombre:"",
+        nombre: "",
         apellidos: "",
-        correo: "",
+        email: "",
         telefono: "",
     }
 
@@ -35,9 +35,9 @@ const AddUser:React.FC<ToggleModal> = ({closeModal}) => {
     const handleSaveOrUpdateUser = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const newBook = {...dataUsers}
+        const newUser = {...dataUsers}
 
-        await axios.post(urlAPI, newBook);
+        await axios.post(urlAPI, newUser);
         
         Swal.fire({
             title: 'Exito',
@@ -69,7 +69,7 @@ const AddUser:React.FC<ToggleModal> = ({closeModal}) => {
 
             <div className='flex flex-col w-full'>
                 <span>Correo</span>
-                <input type="email" name='correo' placeholder='Correo' className='p-2 w-full border border-slate-100' value={dataUsers.correo} onChange={captureData}/>
+                <input type="email" name='email' placeholder='Correo' className='p-2 w-full border border-slate-100' value={dataUsers.email} onChange={captureData}/>
             </div>
             <div className='flex flex-col w-full'>
                 <span>Telefono</span>
