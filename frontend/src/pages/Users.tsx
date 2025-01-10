@@ -19,6 +19,7 @@ const Users:React.FC = () => {
 
     const [modalAddUser, setModalAddUser] = useState<boolean>(false)
     const [users, setUsers] = useState<ValuesAPI[]>([])
+    const [editUser, setEditUser] = useState<number | null>(null)
 
     useEffect(() => {
       getUsers()
@@ -29,7 +30,7 @@ const Users:React.FC = () => {
         setUsers(res.data)
     }
 
-    const deleteBook = async (id_usuario:number) => {
+    const deleteUser = async (id_usuario:number) => {
         const result = await Swal.fire({
             title: '¿Estás seguro que deseas eliminar este usuario?',
             text: 'Esta acción no se puede deshacer.',
@@ -44,6 +45,16 @@ const Users:React.FC = () => {
             await getUsers();
         }
     }
+
+    const updateUser = (id_usuario:number) => {
+        setEditUser(id_usuario)
+        setModalAddUser(true)
+    }
+
+    const closeModal = () => {
+        setModalAddUser(false);
+        setEditUser(null);
+    };
     
 
   return (
@@ -77,10 +88,10 @@ const Users:React.FC = () => {
                                 <td className="p-3 text-center">{user.email}</td>
                                 <td className="p-3 text-center">0</td>
                                 <td className="p-3 text-center w-fit">
-                                    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" >
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" onClick={() => updateUser(user.id_usuario)}>
                                     Editar
                                     </button>
-                                    <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" onClick={() => deleteBook(user.id_usuario)}>
+                                    <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" onClick={() => deleteUser(user.id_usuario)}>
                                     Eliminar
                                     </button>
                                 </td>
@@ -97,7 +108,7 @@ const Users:React.FC = () => {
                 <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-10"></div>
 
                 <div className="fixed inset-0 z-20 flex items-center justify-center">
-                    <AddUser closeModal={() => setModalAddUser(false)} />
+                    <AddUser closeModal={closeModal} idUser={editUser}/>
                 </div>
             
             </>

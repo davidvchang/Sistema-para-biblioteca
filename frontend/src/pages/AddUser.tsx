@@ -1,9 +1,10 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 
 interface ToggleModal {
-    closeModal: () => void
+    closeModal: () => void,
+    idUser: number
 }
 
 interface DataUsers {
@@ -13,7 +14,7 @@ interface DataUsers {
     telefono: string,
 }
 
-const AddUser:React.FC<ToggleModal> = ({closeModal}) => {
+const AddUser:React.FC<ToggleModal> = ({closeModal, idUser}) => {
 
 
     const urlAPI:string = import.meta.env.VITE_URL_API_USERS || ""
@@ -25,6 +26,20 @@ const AddUser:React.FC<ToggleModal> = ({closeModal}) => {
         telefono: "",
     }
 
+    useEffect(() => {
+      if(idUser) {
+        getOneUser()
+      }
+      else {
+        setDataUsers(initialValues);
+      }
+    }, [idUser])
+
+    const getOneUser = async() => {
+        const response = await axios.get(urlAPI + idUser)
+        setDataUsers(response.data[0]);
+    }
+    
     const [dataUsers, setDataUsers] = useState<DataUsers>(initialValues)
 
     const captureData = (e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -35,10 +50,15 @@ const AddUser:React.FC<ToggleModal> = ({closeModal}) => {
     const handleSaveOrUpdateUser = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const newUser = {...dataUsers}
+        if(idUser) {
+            const updateUser = {...dataUsers}
+            await axios.put(urlAPI + idUser, updateUser)
+        }
+        else {
+            const newUser = {...dataUsers}
+            await axios.post(urlAPI, newUser);
+        }
 
-        await axios.post(urlAPI, newUser);
-        
         Swal.fire({
             title: 'Exito',
             text: 'Usuario guardado correctamente.',
@@ -55,7 +75,7 @@ const AddUser:React.FC<ToggleModal> = ({closeModal}) => {
   return (
     <div className='w-3/12 h-fit absolute bottom-20 right-1/3 bg-white p-5 shadow-lg rounded-md'>
       <form className='w-full flex flex-col gap-10' onSubmit={handleSaveOrUpdateUser}>
-        <span className='font-semibold text-2xl text-center'>Agregar Usuario</span>
+        <span className='font-semibold text-2xl text-center'>{idUser ? "Actualizar Usuario" : "Agregar Usuario"}</span>
 
         <div className='flex flex-col gap-5'>
             <div className='flex flex-col w-full'>
