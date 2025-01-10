@@ -3,7 +3,7 @@ import NavMenu from '../components/NavMenu'
 
 const LateralMenu:React.FC = () => {
   return (
-    <section className='min-w-72 min-h-screen bg-bg-Menu text-slate-300 p-5 fixed'>
+    <section className='min-w-72 min-h-screen bg-bg-Menu text-slate-100 p-5 fixed'>
         <div className='flex flex-col gap-10'>
             <div className='flex items-center gap-2 w-full justify-center'>
                 {iconLogo}

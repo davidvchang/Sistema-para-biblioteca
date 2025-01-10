@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SearchInput from '../components/SearchInput'
 import BtnAdd from '../components/BtnAdd'
+import AddUser from './AddUser'
 
 const Users:React.FC = () => {
+
+    const [modalAddUser, setModalAddUser] = useState<boolean>(false)
+
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
         <SearchInput/>
@@ -11,7 +15,7 @@ const Users:React.FC = () => {
 
         <div className='flex justify-between'>
             <span className='text-xl font-semibold'>Todos los usuarios</span>
-            <BtnAdd text='Agregar usuario'/>
+            <BtnAdd text='Agregar usuario' onClick={() => setModalAddUser(true)}/>
         </div>
 
         <div className="container mx-auto p-4">
@@ -45,6 +49,18 @@ const Users:React.FC = () => {
                 </table>
             </div>
         </div>
+
+        {modalAddUser && (
+            <>
+                {/* PONER BORROSO EL FONDO */}
+                <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-10"></div>
+
+                <div className="fixed inset-0 z-20 flex items-center justify-center">
+                    <AddUser closeModal={() => setModalAddUser(false)} />
+                </div>
+            
+            </>
+        )}
       
     </section>
   )
