@@ -1,11 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchInput from '../components/SearchInput'
 import BtnAdd from '../components/BtnAdd'
 import AddUser from './AddUser'
+import axios from 'axios'
+
+interface ValuesAPI {
+    id_usuario: number,
+    nombre: string,
+    apellidos: string,
+    email: string,
+    telefono: string
+}
 
 const Users:React.FC = () => {
 
+    const urlAPI:string = import.meta.env.VITE_URL_API_USERS as string
+
     const [modalAddUser, setModalAddUser] = useState<boolean>(false)
+    const [users, setUsers] = useState<ValuesAPI[]>([])
+
+    useEffect(() => {
+      getUsers()
+    }, [modalAddUser])
+
+    const getUsers = async () => {
+        const res = await axios.get(urlAPI)
+        setUsers(res.data)
+    }
+    
 
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
@@ -31,20 +53,22 @@ const Users:React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="border-b">
-                            <td className="p-3 text-center">Juan</td>
-                            <td className="p-3 text-center">Sanchez</td>
-                            <td className="p-3 text-center">jsanchez@gmail.com</td>
-                            <td className="p-3 text-center">2</td>
-                            <td className="p-3 text-center w-fit">
-                                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" >
-                                Editar
-                                </button>
-                                <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" >
-                                Eliminar
-                                </button>
-                            </td>
-                        </tr>
+                        {users.map((user) => (
+                            <tr className="border-b" key={user.id_usuario}>
+                                <td className="p-3 text-center">{user.nombre}</td>
+                                <td className="p-3 text-center">{user.apellidos}</td>
+                                <td className="p-3 text-center">{user.email}</td>
+                                <td className="p-3 text-center">0</td>
+                                <td className="p-3 text-center w-fit">
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" >
+                                    Editar
+                                    </button>
+                                    <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" >
+                                    Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
