@@ -20,10 +20,11 @@ interface ValuesAPI {
 
 const Books:React.FC = () => {
 
+    const urlAPI:string = import.meta.env.VITE_URL_API_BOOKS || "";
+
+
     const [modalAddBook, setModalAddBook] = useState<boolean>(false)
     const [books, setBooks] = useState<ValuesAPI[]>([])
-
-    const urlAPI:string = "http://localhost:4000/api/libros/"
 
     useEffect(() => {
         getBooks()
@@ -52,7 +53,7 @@ const Books:React.FC = () => {
     
 
   return (
-    <section className='flex flex-col gap-7 w-full py-5 px-10'>
+    <section className='flex flex-col gap-7 w-full py-5 px-10 h-full overflow-y-auto'>
         <SearchInput/>
 
         <span className='text-2xl font-semibold'>Libros</span>

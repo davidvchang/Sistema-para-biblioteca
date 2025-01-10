@@ -12,13 +12,14 @@ function App() {
     <BrowserRouter>
       <main className="flex font-Poppins">
         <LateralMenu/>
-
-        <Routes>
-          <Route path="/" element={<Dashboard/>}/>
-          <Route path="/Libros" element={<Books/>}/>
-          <Route path="/Usuarios" element={<Users/>}/>
-          <Route path="/Configuracion" element={<Settings/>}/>
-        </Routes>
+        <div className="w-full pl-72">
+          <Routes>
+            <Route path="/" element={<Dashboard/>}/>
+            <Route path="/Libros" element={<Books/>}/>
+            <Route path="/Usuarios" element={<Users/>}/>
+            <Route path="/Configuracion" element={<Settings/>}/>
+          </Routes>
+        </div>
       </main>
     </BrowserRouter>
   )

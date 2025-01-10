@@ -3,9 +3,10 @@ import CounterInformation from '../components/CounterInformation'
 import RecentActivity from '../components/RecentActivity'
 import axios from 'axios'
 
-const Dashboard:React.FC = () => {
 
-  const urlAPI:string = "http://localhost:4000/api/libros/"
+const Dashboard:React.FC = () => {
+  
+  const urlAPI:string = import.meta.env.VITE_URL_API_BOOKS || ""
 
   const [numberBooks, setNumberBooks] = useState<number>(0)
 
