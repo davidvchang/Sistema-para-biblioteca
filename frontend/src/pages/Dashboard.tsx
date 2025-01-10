@@ -7,17 +7,26 @@ import axios from 'axios'
 const Dashboard:React.FC = () => {
   
   const urlAPI:string = import.meta.env.VITE_URL_API_BOOKS || ""
-
+  const urlAPIUsers:string = import.meta.env.VITE_URL_API_USERS || ""
+  
   const [numberBooks, setNumberBooks] = useState<number>(0)
+  const [numberUsers, setNumberUsers] = useState<number>(0)
 
   useEffect(() => {
     getBooksNumber()
+    getUsersNumber()
   }, [])
 
   const getBooksNumber = async () => {
     const response = await axios.get(urlAPI)
     const quantityBooks = response.data.length;
     setNumberBooks(quantityBooks)
+  }
+
+  const getUsersNumber = async () => {
+    const response = await axios.get(urlAPIUsers)
+    const quantityUsers = response.data.length;
+    setNumberUsers(quantityUsers)
   }
   
 
@@ -28,7 +37,7 @@ const Dashboard:React.FC = () => {
 
       <div className='flex w-full flex-wrap justify-around'>
         <CounterInformation text='Libros totales' icon={iconTotalsBook} number={numberBooks}/> 
-        <CounterInformation text='Usuarios' icon={iconUsers} number={3}/> 
+        <CounterInformation text='Usuarios' icon={iconUsers} number={numberUsers}/> 
         <CounterInformation text='Libros prestados' icon={iconBorrowedBooks} number={1}/> 
         <CounterInformation text='Libros Vencidos' icon={iconClock} number={0}/> 
       </div>
