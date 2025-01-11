@@ -82,16 +82,16 @@ const Users:React.FC = () => {
                     </thead>
                     <tbody>
                         {users.map((user) => (
-                            <tr className="border-b" key={user.id_usuario}>
+                            <tr className="border-b hover:bg-gray-100 hover:transition-colors duration-300" key={user.id_usuario}>
                                 <td className="p-3 text-center">{user.nombre}</td>
                                 <td className="p-3 text-center">{user.apellidos}</td>
                                 <td className="p-3 text-center">{user.email}</td>
                                 <td className="p-3 text-center">0</td>
                                 <td className="p-3 text-center w-fit">
-                                    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" onClick={() => updateUser(user.id_usuario)}>
+                                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" onClick={() => updateUser(user.id_usuario)}>
                                     Editar
                                     </button>
-                                    <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" onClick={() => deleteUser(user.id_usuario)}>
+                                    <button className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" onClick={() => deleteUser(user.id_usuario)}>
                                     Eliminar
                                     </button>
                                 </td>

@@ -1,9 +1,10 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 
 interface ToggleModal {
-    closeModal: () => void
+    closeModal: () => void,
+    idBook: number
 }
 
 interface DataBooks {
@@ -18,7 +19,7 @@ interface DataBooks {
 }
 
 
-const AddBook:React.FC<ToggleModal> = ({closeModal}) => {
+const AddBook:React.FC<ToggleModal> = ({closeModal, idBook}) => {
 
     const urlAPI:string = import.meta.env.VITE_URL_API_BOOKS || ""
 
@@ -35,6 +36,27 @@ const AddBook:React.FC<ToggleModal> = ({closeModal}) => {
 
     const [dataBooks, setDataBooks] = useState<DataBooks>(initialValues)
 
+    useEffect(() => {
+        if(idBook) {
+            getOneBook()
+        }
+        else {
+            setDataBooks(initialValues);
+        }
+    }, [idBook])
+
+    const getOneBook = async() => {
+        const response = await axios.get(urlAPI + idBook)
+        const bookData = response.data[0]
+
+        if (bookData.fecha_publicacion) {
+            const formattedDate = new Date(bookData.fecha_publicacion).toISOString().split('T')[0];
+            bookData.fecha_publicacion = formattedDate;
+        }
+
+        setDataBooks(bookData);
+    }
+
     const captureData = (e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = e.target;
         setDataBooks((prevData) => ({...prevData, [name]: value}));
@@ -43,9 +65,14 @@ const AddBook:React.FC<ToggleModal> = ({closeModal}) => {
     const handleSaveOrUpdateBook = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const newBook = {...dataBooks}
-
-        await axios.post(urlAPI, newBook);
+        if(idBook) {
+            const updateBook = {...dataBooks}
+            await axios.put(urlAPI + idBook, updateBook)
+        }
+        else {
+            const newBook = {...dataBooks}
+            await axios.post(urlAPI, newBook);
+        }
         
         Swal.fire({
             title: 'Exito',

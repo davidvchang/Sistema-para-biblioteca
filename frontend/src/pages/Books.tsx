@@ -25,6 +25,7 @@ const Books:React.FC = () => {
 
     const [modalAddBook, setModalAddBook] = useState<boolean>(false)
     const [books, setBooks] = useState<ValuesAPI[]>([])
+    const [editBook, setEditBook] = useState<number | null>(null)
 
     useEffect(() => {
         getBooks()
@@ -50,6 +51,16 @@ const Books:React.FC = () => {
             await getBooks();
         }
     }
+
+    const updateBook = (id_usuario:number) => {
+        setEditBook(id_usuario)
+        setModalAddBook(true)
+    }
+
+    const closeModal = () => {
+        setModalAddBook(false);
+        setEditBook(null);
+    };
     
 
   return (
@@ -78,18 +89,18 @@ const Books:React.FC = () => {
                     <tbody>
                         {books.map((book) => (
 
-                            <tr className="border-b" key={book.id_libro}>
+                            <tr className="border-b hover:bg-gray-100 hover:transition-colors duration-300" key={book.id_libro}>
                                 <td className="p-4 flex justify-center">
-                                    <img src="https://via.placeholder.com/50" alt="Libro" className="w-14 h-20 object-cover rounded" />
+                                    <img src="https://www.travelandleisure.com/thmb/KTIha5CLifSoUD3gx0YP51xc3rY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/blue0517-4dfc85cb0200460ab717b101ac07888f.jpg" alt="Libro" className="w-14 h-20 object-cover rounded" />
                                 </td>
                                 <td className="p-4 text-center">{book.titulo}</td>
                                 <td className="p-4 text-center">{book.autor}</td>
                                 <td className="p-4 text-center">{book.stock}</td>
                                 <td className="p-4 text-center">
-                                    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" >
+                                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" onClick={() => updateBook(book.id_libro)}>
                                     Editar
                                     </button>
-                                    <button className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" onClick={() => deleteBook(book.id_libro)}>
+                                    <button className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 hover:transition-colors duration-300" onClick={() => deleteBook(book.id_libro)}>
                                     Eliminar
                                     </button>
                                 </td>
@@ -107,7 +118,7 @@ const Books:React.FC = () => {
                 <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-10"></div>
 
                 <div className="fixed inset-0 z-20 flex items-center justify-center">
-                    <AddBook closeModal={() => setModalAddBook(false)} />
+                    <AddBook closeModal={closeModal} idBook={editBook}/>
                 </div>
             
             </>
