@@ -3,6 +3,36 @@ import CounterInformation from '../components/CounterInformation'
 import RecentActivity from '../components/RecentActivity'
 import axios from 'axios'
 
+interface DataBorrowing {
+  id_prestamo: number,
+  id_usuario: number,
+  id_libro: number,
+  fecha_prestamo: string,
+  fecha_devolucion: string,
+  estado: string,
+  cantidad_prestada: number
+}
+
+interface DataAPIBooks {
+  autor: string,
+  estado: string,
+  fecha_publicacion: string,
+  genero: string,
+  id_libro: number
+  isbn: string,
+  precio: string,
+  stock: number,
+  titulo: string
+}
+
+interface DataAPIUsers {
+  apellidos: string,
+  email: string,
+  id_usuario: number
+  nombre: string,
+  telefono: string
+}
+
 
 const Dashboard:React.FC = () => {
   
@@ -14,30 +44,47 @@ const Dashboard:React.FC = () => {
   const [numberUsers, setNumberUsers] = useState<number>(0)
   const [numberBorrowing, setNumberBorrowing] = useState<number>(0)
 
+  const [dataBorrowings, setDataBorrowings] = useState<DataBorrowing[]>([])
+  const [books, setBooks] = useState<DataAPIBooks[]>([])
+  const [users, setUsers] = useState<DataAPIUsers[]>([])
+
   useEffect(() => {
-    getBooksNumber()
-    getUsersNumber()
-    getBorrowingsNumber()
+    getDataBooksAndUsers()
+    getNumbers()
   }, [])
 
-  const getBooksNumber = async () => {
-    const response = await axios.get(urlAPI)
-    const quantityBooks = response.data.length;
-    setNumberBooks(quantityBooks)
+  const getDataBooksAndUsers = async () => {
+    const [booksResponse, usersResponse, borrowingsResponse] = await Promise.all([
+        axios.get<DataAPIBooks[]>(urlAPI),
+        axios.get<DataAPIUsers[]>(urlAPIUsers),
+        axios.get<DataBorrowing[]>(urlAPIBorrowings)
+    ]);
+    setBooks(booksResponse.data);
+    setUsers(usersResponse.data);
+    setDataBorrowings(borrowingsResponse.data)
   }
 
-  const getUsersNumber = async () => {
-    const response = await axios.get(urlAPIUsers)
-    const quantityUsers = response.data.length;
-    setNumberUsers(quantityUsers)
+  const getNumbers = async () => {
+    const [booksResponse, usersResponse, borrowingsResponse] = await Promise.all([
+      axios.get<DataAPIBooks[]>(urlAPI),
+      axios.get<DataAPIUsers[]>(urlAPIUsers),
+      axios.get<DataBorrowing[]>(urlAPIBorrowings),
+    ]);
+
+    setNumberBooks(booksResponse.data.length);
+    setNumberUsers(usersResponse.data.length);
+    setNumberBorrowing(borrowingsResponse.data.length);
   }
 
-  const getBorrowingsNumber = async () => {
-    const response = await axios.get(urlAPIBorrowings)
-    const quantityBorrowings = response.data.length;
-    setNumberBorrowing(quantityBorrowings)
+ const getBookTitle = (bookId: number) => {
+    const book = books.find(b => b.id_libro === bookId);
+    return book ? book.titulo : 'Libro no encontrado';
+  } 
+
+  const getUserName = (userId: number) => {
+    const user = users.find(u => u.id_usuario === userId);
+    return user ? `${user.nombre} ${user.apellidos}` : 'Usuario no encontrado';
   }
-  
 
 
   return (
@@ -53,9 +100,9 @@ const Dashboard:React.FC = () => {
       <span className='text-xl font-semibold mt-12'>Actividades Recientes</span>
 
       <div className='flex flex-col gap-5'>
-        <RecentActivity name='Juan Gutierrez' action='Pidió prestado el libro' nameBook='100 años de soledad' time='2 horas'/>
-        <RecentActivity name='Sofia Castro' action='Regresó el libro' nameBook='Hacia el más allá' time='3 horas'/>
-        <RecentActivity name='Sofia Castro' action='Regresó el libro' nameBook='Hacia el más allá' time='3 horas'/>
+        {dataBorrowings.map((borrowing) => (
+            <RecentActivity name={getUserName(borrowing.id_usuario)} action='Pidió prestado el libro' nameBook={getBookTitle(borrowing.id_libro)}/>
+        ))}
       </div>
     </section>
   )

@@ -76,6 +76,11 @@ const Borrowing:React.FC = () => {
         return user ? `${user.nombre} ${user.apellidos}` : 'Usuario no encontrado';
     }
 
+    const formatDate = (date: string) => {
+        const d = new Date(date);
+        return d.toLocaleDateString('es-ES');
+    }
+
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
         <SearchInput/>
@@ -106,7 +111,7 @@ const Borrowing:React.FC = () => {
                                 <td className="p-2 flex justify-center">{getBookTitle(borrowing.id_libro)}</td>
                                 <td className="p-2 text-center">{getUserName(borrowing.id_usuario)}</td>
                                 <td className="p-2 text-center">{borrowing.cantidad_prestada}</td>
-                                <td className="p-2 text-center">{borrowing.fecha_prestamo}</td>
+                                <td className="p-2 text-center">{formatDate(borrowing.fecha_prestamo)}</td>
                                 <td className="p-2 text-center">{borrowing.estado}</td>
                                 <td className="p-2 text-center">
                                     <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300">
