@@ -1,12 +1,12 @@
 import React from 'react'
+
 interface Props {
     name: string,
     action: string,
     nameBook: string,
-    time: string
 }
 
-const RecentActivity:React.FC<Props> = ({name, action, nameBook, time}) => {
+const RecentActivity:React.FC<Props> = ({name, action, nameBook}) => {
   return (
     <div className='flex flex-col pl-10'>
         <span className='font-semibold'>{name}</span>
