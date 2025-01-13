@@ -3,6 +3,7 @@ import morgan from "morgan"
 import cors from 'cors'
 import BooksRoutes from "./routes/books.routes.js" 
 import UsersRoutes from "./routes/users.routes.js";
+import BorrowingRoutes from "./routes/borrowing.routes.js";
 
 
 const app = express()
@@ -15,5 +16,6 @@ app.use(cors());
 
 app.use("/api/libros", BooksRoutes)
 app.use("/api/usuarios", UsersRoutes)
+app.use("/api/prestamos", BorrowingRoutes)
 
 export default app
