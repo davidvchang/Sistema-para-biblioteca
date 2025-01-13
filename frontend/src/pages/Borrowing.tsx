@@ -32,7 +32,8 @@ interface DataAPIUsers {
     email: string,
     id_usuario: number
     nombre: string,
-    telefono: string
+    telefono: string,
+    libros_prestados: number
 }
 
 
@@ -57,22 +58,34 @@ const Borrowing:React.FC = () => {
         setOpenDropdown((prev) => (prev === id ? null : id));
      };
 
-     const updateQuantityBook = async (id_libro: number, cantidad_prestada: number) => {
+     const updateQuantityBookAndUser = async (id_libro: number, cantidad_prestada: number, id_usuario: number) => {
 
         const book = books.find((b) => b.id_libro === id_libro);
+        const user = users.find((c) => c.id_usuario === id_usuario);
+
         if (!book) {
             console.error(`El libro con id ${id_libro} no fue encontrado.`);
             return;
         }
+        if (!user) {
+            console.error(`El usuario con id ${id_usuario} no fue encontrado.`);
+            return;
+        }
 
         const stock:number = book.stock
+        const libros_prestados:number = user.libros_prestados
 
         const nuevoStock = stock + cantidad_prestada
+        const nuevoStockUser = libros_prestados - cantidad_prestada
 
         const newCantidad = {
             stock: nuevoStock
         }
+        const newCantidadUser = {
+            libros_prestados: nuevoStockUser
+        }
         await axios.put(`${urlAPIBooks}stock/${id_libro}`, newCantidad )
+        await axios.put(`${urlAPIUsers}libros_prestados/${id_usuario}`, newCantidadUser )
      }
 
      const updateBorrowing = async (id_prestamo: number, newStatus: string) => {
@@ -92,8 +105,8 @@ const Borrowing:React.FC = () => {
 
      }
 
-      const handleStatusChange =  (id: number, newStatus: string, id_libro: number, cantidad: number) => {
-        updateQuantityBook(id_libro, cantidad)
+      const handleStatusChange =  (id: number, newStatus: string, id_libro: number, id_usuario: number, cantidad: number) => {
+        updateQuantityBookAndUser(id_libro, cantidad, id_usuario)
         updateBorrowing(id, newStatus)
         setOpenDropdown(null);
       };
@@ -169,7 +182,7 @@ const Borrowing:React.FC = () => {
                                     <div className="absolute right-6 mt-0 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-10">
                                         <select
                                         className="block w-full p-2 text-sm text-gray-700 bg-white border rounded-md focus:outline-none"
-                                        onChange={(e) => handleStatusChange(borrowing.id_prestamo, e.target.value, borrowing.id_libro, borrowing.cantidad_prestada)}
+                                        onChange={(e) => handleStatusChange(borrowing.id_prestamo, e.target.value, borrowing.id_libro, borrowing.id_usuario, borrowing.cantidad_prestada)}
                                         >
                                         <option value="">Seleccionar estado</option>
                                         <hr />

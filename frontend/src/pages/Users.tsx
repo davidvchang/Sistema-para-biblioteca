@@ -10,7 +10,8 @@ interface ValuesAPI {
     nombre: string,
     apellidos: string,
     email: string,
-    telefono: string
+    telefono: string,
+    libros_prestados: number
 }
 
 const Users:React.FC = () => {
@@ -86,7 +87,7 @@ const Users:React.FC = () => {
                                 <td className="p-2 text-center">{user.nombre}</td>
                                 <td className="p-2 text-center">{user.apellidos}</td>
                                 <td className="p-2 text-center">{user.email}</td>
-                                <td className="p-2 text-center">0</td>
+                                <td className="p-2 text-center">{user.libros_prestados || 0}</td>
                                 <td className="p-2 text-center w-fit">
                                     <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" onClick={() => updateUser(user.id_usuario)}>
                                     Editar

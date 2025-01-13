@@ -71,3 +71,20 @@ export const updateUser = async (req, res) => {
         console.log('Ha ocurrido un error al actualizar el usuario: ' + ex)
     }
 }
+
+export const updateLibros_prestados = async (req, res) => {
+    const {id_usuario} = req.params
+    const {libros_prestados} = req.body
+    try {
+        const existBook = await pool.query("SELECT COUNT(*) FROM usuarios WHERE id_usuario = $1", [id_usuario])
+        if(existBook.rows[0].count > 0) {
+            const book = await pool.query("UPDATE usuarios SET libros_prestados = $1 WHERE id_usuario = $2", [libros_prestados, id_usuario])
+            res.status(200).send("Se ha actualizado correctamente");
+        }
+        else{
+            res.status(404).send("No se ha encontrado ningun libro");
+        }
+    } catch (ex) {
+        console.log('Ha ocurrido un error al eliminar el libro: ' + ex)
+    }
+}

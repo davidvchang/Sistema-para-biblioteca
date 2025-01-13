@@ -31,7 +31,8 @@ interface DataAPIUsers {
     email: string,
     id_usuario: number
     nombre: string,
-    telefono: string
+    telefono: string,
+    libros_prestados: number
 }
 
 const AddBorrowing:React.FC<ToggleModal> = ({closeModal}) => {
@@ -70,12 +71,14 @@ const AddBorrowing:React.FC<ToggleModal> = ({closeModal}) => {
         setDataBorrowing((prevData) => ({...prevData, [name]: name === "cantidad" && value === "" ? "" : name === "cantidad" ? parseInt(value) : value,}));
     }
 
-    const updateBook = async () => {
+    const updateBookAndUser = async () => {
 
         const book = books.find((b) => b.id_libro === parseInt(dataBorrowing.libro));
+        const user = users.find((b) => b.id_usuario === parseInt(dataBorrowing.usuario));
 
-        if(book) {
+        if(book && user) {
             const newStock = book.stock - dataBorrowing.cantidad;
+            const newStockUser = user.libros_prestados + dataBorrowing.cantidad;
 
             if (newStock < 0) {
                 Swal.fire({
@@ -90,6 +93,12 @@ const AddBorrowing:React.FC<ToggleModal> = ({closeModal}) => {
                     ...book,
                     stock: newStock,
                 });
+
+                await axios.put(urlAPIUsers + "libros_prestados/" + user.id_usuario, {
+                    ...user,
+                    libros_prestados: newStockUser,
+                });
+                console.log("LINK: ", urlAPIUsers + "libros_prestados/" + user.id_usuario)
 
                 Swal.fire({
                     title: 'Exito',
@@ -116,7 +125,7 @@ const AddBorrowing:React.FC<ToggleModal> = ({closeModal}) => {
         }
         await axios.post(urlAPI, newBoroowing);
 
-        updateBook()
+        updateBookAndUser()
     }
 
     
