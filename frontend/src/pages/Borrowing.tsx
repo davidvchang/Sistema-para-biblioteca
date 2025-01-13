@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SearchInput from '../components/SearchInput'
 import BtnAdd from '../components/BtnAdd'
+import AddBorrowing from './AddBorrowing'
 
 const Borrowing:React.FC = () => {
+
+     const [modalAddBorrowing, setModalAddBorrowing] = useState<boolean>(false)
+
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
         <SearchInput/>
@@ -11,7 +15,7 @@ const Borrowing:React.FC = () => {
 
         <div className='flex justify-between'>
             <span className='text-xl font-semibold'>Prestamos realizados</span>
-            {/* <BtnAdd text='Agregar libro' onClick={}/> */}
+            <BtnAdd text='Pedir prestamo' onClick={() => setModalAddBorrowing(true)}/>
         </div>
 
         <div className="container mx-auto p-4">
@@ -45,6 +49,19 @@ const Borrowing:React.FC = () => {
                 </table>
             </div>
         </div>
+
+        {modalAddBorrowing && (
+            <>
+                {/* PONER BORROSO EL FONDO */}
+                <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-10"></div>
+
+                <div className="fixed inset-0 z-20 flex items-center justify-center">
+                    <AddBorrowing closeModal={() => setModalAddBorrowing(false)}/>
+                </div>
+            
+            </>
+        )}
+
     </section>
   )
 }
