@@ -8,13 +8,16 @@ const Dashboard:React.FC = () => {
   
   const urlAPI:string = import.meta.env.VITE_URL_API_BOOKS || ""
   const urlAPIUsers:string = import.meta.env.VITE_URL_API_USERS || ""
+  const urlAPIBorrowings: string = import.meta.env.VITE_URL_API_BORROWINGS
   
   const [numberBooks, setNumberBooks] = useState<number>(0)
   const [numberUsers, setNumberUsers] = useState<number>(0)
+  const [numberBorrowing, setNumberBorrowing] = useState<number>(0)
 
   useEffect(() => {
     getBooksNumber()
     getUsersNumber()
+    getBorrowingsNumber()
   }, [])
 
   const getBooksNumber = async () => {
@@ -28,6 +31,12 @@ const Dashboard:React.FC = () => {
     const quantityUsers = response.data.length;
     setNumberUsers(quantityUsers)
   }
+
+  const getBorrowingsNumber = async () => {
+    const response = await axios.get(urlAPIBorrowings)
+    const quantityBorrowings = response.data.length;
+    setNumberBorrowing(quantityBorrowings)
+  }
   
 
 
@@ -38,8 +47,7 @@ const Dashboard:React.FC = () => {
       <div className='flex w-full flex-wrap justify-around'>
         <CounterInformation text='Libros totales' icon={iconTotalsBook} number={numberBooks}/> 
         <CounterInformation text='Usuarios' icon={iconUsers} number={numberUsers}/> 
-        <CounterInformation text='Libros prestados' icon={iconBorrowedBooks} number={1}/> 
-        <CounterInformation text='Libros Vencidos' icon={iconClock} number={0}/> 
+        <CounterInformation text='Libros prestados' icon={iconBorrowedBooks} number={numberBorrowing}/>
       </div>
 
       <span className='text-xl font-semibold mt-12'>Actividades Recientes</span>
