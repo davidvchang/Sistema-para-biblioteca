@@ -61,7 +61,8 @@ const Dashboard:React.FC = () => {
     ]);
     setBooks(booksResponse.data);
     setUsers(usersResponse.data);
-    setDataBorrowings(borrowingsResponse.data)
+    const lastFourBorrowings = borrowingsResponse.data.slice(-6);
+    setDataBorrowings(lastFourBorrowings);
   }
 
   const getNumbers = async () => {
@@ -100,7 +101,10 @@ const Dashboard:React.FC = () => {
       <span className='text-xl font-semibold mt-12'>Actividades Recientes</span>
 
       <div className='flex flex-col gap-5'>
-        {dataBorrowings.map((borrowing) => (
+        {dataBorrowings
+        .slice(-6)
+        .reverse()
+        .map((borrowing) => (
             <RecentActivity name={getUserName(borrowing.id_usuario)} action='Pidió prestado el libro' nameBook={getBookTitle(borrowing.id_libro)}/>
         ))}
       </div>
