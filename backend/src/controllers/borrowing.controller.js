@@ -37,6 +37,17 @@ export const getOneBorrowing = async (req, res) => {
     }
 }
 
+export const getBorrowingsBorrowed = async (req, res) => {
+    const {estado} = req.params
+
+    try {
+        const borrowings = await pool.query("SELECT * FROM prestamos WHERE estado = $1", [estado])
+        res.status(200).send(borrowings.rows)
+    } catch (ex) {
+        console.log("Ha ocurrido un error al consultar los prestamos: ", ex)
+    }
+}
+
 export const updateBorrowing = async (req, res) => {
     const {estado} = req.body;
     const {id_prestamo} = req.params;

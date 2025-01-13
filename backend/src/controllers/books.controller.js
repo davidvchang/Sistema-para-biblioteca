@@ -68,3 +68,20 @@ export const updateBook = async (req, res) => {
         console.log('Ha ocurrido un error al eliminar el libro: ' + ex)
     }
 }
+
+export const updateStock = async (req, res) => {
+    const {id_libro} = req.params
+    const {stock} = req.body
+    try {
+        const existBook = await pool.query("SELECT COUNT(*) FROM libros WHERE id_libro = $1", [id_libro])
+        if(existBook.rows[0].count > 0) {
+            const book = await pool.query("UPDATE libros SET stock = $1 WHERE id_libro = $2", [stock, id_libro])
+            res.status(200).send("Se ha actualizado correctamente");
+        }
+        else{
+            res.status(404).send("No se ha encontrado ningun libro");
+        }
+    } catch (ex) {
+        console.log('Ha ocurrido un error al eliminar el libro: ' + ex)
+    }
+}
