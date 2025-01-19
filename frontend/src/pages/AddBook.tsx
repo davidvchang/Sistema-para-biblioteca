@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 
 interface ToggleModal {
     closeModal: () => void,
-    idBook: number
+    idBook: number | null
 }
 
 interface DataBooks {
