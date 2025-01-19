@@ -18,9 +18,4 @@ app.use("/api/libros", BooksRoutes)
 app.use("/api/usuarios", UsersRoutes)
 app.use("/api/prestamos", BorrowingRoutes)
 
-// Ruta de prueba simple para verificar que el servidor está funcionando
-app.get("/", (req, res) => {
-    res.send("Servidor Express funcionando en Vercel");
-  });
-
 export default app

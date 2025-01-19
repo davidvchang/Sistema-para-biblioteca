@@ -11,8 +11,4 @@ router.delete("/:id_libro", deleteBook)
 router.put("/:id_libro", updateBook)
 router.put("/stock/:id_libro", updateStock)
 
-router.get('/', (req, res) => {
-    res.json([{ id: 1, title: 'Libro de prueba', author: 'Autor' }]);
-  });
-
 export default router
