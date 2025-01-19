@@ -75,8 +75,8 @@ const Borrowing:React.FC = () => {
         const stock:number = book.stock
         const libros_prestados:number = user.libros_prestados
 
-        const nuevoStock = stock + cantidad_prestada
-        const nuevoStockUser = libros_prestados - cantidad_prestada
+        const nuevoStock: number = Number(stock) + Number(cantidad_prestada)
+        const nuevoStockUser: number = Number(libros_prestados) - Number(cantidad_prestada)
 
         const newCantidad = {
             stock: nuevoStock

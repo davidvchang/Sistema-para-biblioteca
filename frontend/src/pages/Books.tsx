@@ -79,10 +79,12 @@ const Books:React.FC = () => {
                 <table className="min-w-full bg-white border border-gray-100 rounded-lg">
                     <thead className=" border-b">
                         <tr>
-                        <th className="p-4 text-center">Imagen</th>
                         <th className="p-4 text-center">Título</th>
                         <th className="p-4 text-center">Autor</th>
+                        <th className="p-4 text-center">ISBN</th>
+                        <th className="p-4 text-center">Género</th>
                         <th className="p-4 text-center">Stock</th>
+                        <th className="p-4 text-center">Estado</th>
                         <th className="p-4 text-center">Acciones</th>
                         </tr>
                     </thead>
@@ -92,7 +94,10 @@ const Books:React.FC = () => {
                             <tr className="border-b hover:bg-gray-100 hover:transition-colors duration-300" key={book.id_libro}>
                                 <td className="p-4 text-center">{book.titulo}</td>
                                 <td className="p-4 text-center">{book.autor}</td>
+                                <td className="p-4 text-center">{book.isbn}</td>
+                                <td className="p-4 text-center">{book.genero}</td>
                                 <td className="p-4 text-center">{book.stock}</td>
+                                <td className="p-4 text-center">{book.estado}</td>
                                 <td className="p-4 text-center">
                                     <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 hover:transition-colors duration-300" onClick={() => updateBook(book.id_libro)}>
                                     Editar
