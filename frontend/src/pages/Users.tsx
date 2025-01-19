@@ -21,6 +21,7 @@ const Users:React.FC = () => {
     const [modalAddUser, setModalAddUser] = useState<boolean>(false)
     const [users, setUsers] = useState<ValuesAPI[]>([])
     const [editUser, setEditUser] = useState<number | null>(null)
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     useEffect(() => {
       getUsers()
@@ -56,11 +57,19 @@ const Users:React.FC = () => {
         setModalAddUser(false);
         setEditUser(null);
     };
+
+    const filteredUsers = users.filter((user) => {
+        return (
+            user.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.apellidos.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    });
     
 
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
-        <SearchInput/>
+        <SearchInput onSearch={setSearchQuery}/>
 
         <span className='text-2xl font-semibold'>Usuarios</span>
 
@@ -82,7 +91,7 @@ const Users:React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
+                        {filteredUsers.map((user) => (
                             <tr className="border-b hover:bg-gray-100 hover:transition-colors duration-300" key={user.id_usuario}>
                                 <td className="p-2 text-center">{user.nombre}</td>
                                 <td className="p-2 text-center">{user.apellidos}</td>

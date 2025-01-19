@@ -1,9 +1,13 @@
 import React from 'react'
 
-const SearchInput:React.FC = () => {
+interface SearchInputProps {
+  onSearch: (query: string) => void; // Función para actualizar el estado de búsqueda
+}
+
+const SearchInput:React.FC<SearchInputProps> = ({onSearch}) => {
   return (
     <div className='relative'>
-      <input type="search" name="search" id="search" placeholder='Buscar...' className='py-2 border border-slate-300 rounded-md pl-9 outline-none'/>
+      <input type="search" name="search" id="search" placeholder='Buscar...' className='py-2 border border-slate-300 rounded-md pl-9 outline-none' onChange={(e) => onSearch(e.target.value)}/>
       {iconSearch}
     </div>
   )

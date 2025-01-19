@@ -48,6 +48,7 @@ const Borrowing:React.FC = () => {
     const [books, setBooks] = useState<DataAPIBooks[]>([])
     const [users, setUsers] = useState<DataAPIUsers[]>([])
     const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
      useEffect(() => {
        getBorrowings()
@@ -140,9 +141,17 @@ const Borrowing:React.FC = () => {
         return d.toLocaleDateString('es-ES');
     }
 
+    const filteredBorrowing = dataBorrowings.filter((borrowing) => {
+        return (
+            getUserName(borrowing.id_usuario).toLowerCase().includes(searchQuery.toLowerCase()) ||
+            getBookTitle(borrowing.id_libro).toLowerCase().includes(searchQuery.toLowerCase()) ||
+            borrowing.fecha_prestamo.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    });
+
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10'>
-        <SearchInput/>
+        <SearchInput onSearch={setSearchQuery}/>
 
         <span className='text-2xl font-semibold'>Prestamos</span>
 
@@ -165,7 +174,7 @@ const Borrowing:React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {dataBorrowings.map((borrowing) => (
+                        {filteredBorrowing.map((borrowing) => (
                             <tr className="border-b hover:bg-gray-100 hover:transition-colors duration-300" key={borrowing.id_prestamo}>
                                 <td className="p-2 flex justify-center">{getBookTitle(borrowing.id_libro)}</td>
                                 <td className="p-2 text-center">{getUserName(borrowing.id_usuario)}</td>

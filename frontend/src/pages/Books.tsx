@@ -26,6 +26,7 @@ const Books:React.FC = () => {
     const [modalAddBook, setModalAddBook] = useState<boolean>(false)
     const [books, setBooks] = useState<ValuesAPI[]>([])
     const [editBook, setEditBook] = useState<number | null>(null)
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     useEffect(() => {
         getBooks()
@@ -61,11 +62,20 @@ const Books:React.FC = () => {
         setModalAddBook(false);
         setEditBook(null);
     };
+
+    const filteredBooks = books.filter((book) => {
+        return (
+            book.titulo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.autor.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.isbn.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.genero.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    });
     
 
   return (
     <section className='flex flex-col gap-7 w-full py-5 px-10 h-full overflow-y-auto'>
-        <SearchInput/>
+        <SearchInput onSearch={setSearchQuery}/>
 
         <span className='text-2xl font-semibold'>Libros</span>
 
@@ -76,7 +86,7 @@ const Books:React.FC = () => {
 
         <div className="container mx-auto p-4">
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-100 rounded-lg">
+                <table className="min-w-full bg-white border border-gray-100 rounded-lg" id='tableBooks'>
                     <thead className=" border-b">
                         <tr>
                         <th className="p-4 text-center">Título</th>
@@ -89,7 +99,7 @@ const Books:React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {books.map((book) => (
+                        {filteredBooks.map((book) => (
 
                             <tr className="border-b hover:bg-gray-100 hover:transition-colors duration-300" key={book.id_libro}>
                                 <td className="p-4 text-center">{book.titulo}</td>
