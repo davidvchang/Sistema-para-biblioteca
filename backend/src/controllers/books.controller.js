@@ -11,9 +11,8 @@ export const getBooks = async (req, res) => {
 
 export const postBook = async (req, res) => {
     const {titulo, autor, isbn, genero, precio, stock, fecha_publicacion, estado} = req.body
-    const imagen = req.file ? req.file.path : null;
     try {
-        await pool.query("INSERT INTO libros (titulo, autor, isbn, genero, precio, stock, fecha_publicacion, estado, imagen) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [titulo, autor, isbn, genero, precio, stock, fecha_publicacion, estado, imagen])
+        await pool.query("INSERT INTO libros (titulo, autor, isbn, genero, precio, stock, fecha_publicacion, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [titulo, autor, isbn, genero, precio, stock, fecha_publicacion, estado])
         res.send('Libro guardado correctamente');
     } catch (ex) {
         console.log('Ha ocurrido un error al guardar el libro: ' + ex);

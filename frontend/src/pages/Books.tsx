@@ -90,9 +90,6 @@ const Books:React.FC = () => {
                         {books.map((book) => (
 
                             <tr className="border-b hover:bg-gray-100 hover:transition-colors duration-300" key={book.id_libro}>
-                                <td className="p-4 flex justify-center">
-                                    <img src="https://www.travelandleisure.com/thmb/KTIha5CLifSoUD3gx0YP51xc3rY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/blue0517-4dfc85cb0200460ab717b101ac07888f.jpg" alt="Libro" className="w-14 h-20 object-cover rounded" />
-                                </td>
                                 <td className="p-4 text-center">{book.titulo}</td>
                                 <td className="p-4 text-center">{book.autor}</td>
                                 <td className="p-4 text-center">{book.stock}</td>

@@ -15,7 +15,7 @@ interface DataBooks {
     precio: number,
     stock: number,
     fecha_publicacion: string,
-    estado: string
+    estado: string,
 }
 
 
@@ -31,7 +31,7 @@ const AddBook:React.FC<ToggleModal> = ({closeModal, idBook}) => {
         precio: 0,
         stock: 0,
         fecha_publicacion: "dd/mm/aaaa",
-        estado: "Disponible"
+        estado: "Disponible",
     }
 
     const [dataBooks, setDataBooks] = useState<DataBooks>(initialValues)
@@ -88,10 +88,9 @@ const AddBook:React.FC<ToggleModal> = ({closeModal, idBook}) => {
     }
 
   return (
-    <div className='w-5/12 h-fit absolute bottom-20 left-1/3 bg-white p-5 shadow-lg rounded-md'>
+    <div className='w-5/12 h-fit absolute bottom-[5px] left-1/3 bg-white p-5 shadow-lg rounded-md'>
       <form className='w-full flex flex-col gap-10' onSubmit={handleSaveOrUpdateBook}>
         <span className='font-semibold text-2xl text-center'>Agregar Libro</span>
-
         <div className='flex flex-col gap-5'>
             <div className='flex gap-5'>
                 <div className='flex flex-col w-full'>
