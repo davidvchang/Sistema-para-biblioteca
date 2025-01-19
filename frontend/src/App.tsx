@@ -4,7 +4,6 @@ import LateralMenu from "./pages/LateralMenu"
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Users from "./pages/Users";
-import Settings from "./pages/Settings";
 import Borrowing from "./pages/Borrowing";
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
             <Route path="/Libros" element={<Books/>}/>
             <Route path="/Usuarios" element={<Users/>}/>
             <Route path="/Prestamos" element={<Borrowing/>}/>
-            <Route path="/Configuracion" element={<Settings/>}/>
           </Routes>
         </div>
       </main>

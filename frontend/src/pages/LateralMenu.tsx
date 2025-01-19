@@ -15,7 +15,6 @@ const LateralMenu:React.FC = () => {
                 <NavMenu link='Libros' icon={iconBooks} text='Libros'/>
                 <NavMenu link='Usuarios' icon={iconUsers} text='Usuarios'/>
                 <NavMenu link='Prestamos' icon={iconBorrowing} text='Prestamos'/>
-                <NavMenu link='Configuracion' icon={iconSettings} text='Configuración'/>
             </div>
 
         </div>

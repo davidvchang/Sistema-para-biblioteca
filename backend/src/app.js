@@ -14,6 +14,8 @@ app.use(morgan("dev"))
 app.use(express.json())
 app.use(cors());
 
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api/libros", BooksRoutes)
 app.use("/api/usuarios", UsersRoutes)
 app.use("/api/prestamos", BorrowingRoutes)
