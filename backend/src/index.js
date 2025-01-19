@@ -3,9 +3,11 @@ import {openConnection} from "./bd.js"
 
 openConnection();
 
-async function main() {
-    await app.listen(app.get("port"))
-    console.log(`Server on port: ${app.get("port")}`)
-}
+// async function main() {
+//     await app.listen(app.get("port"))
+//     console.log(`Server on port: ${app.get("port")}`)
+// }
 
-main()
+// main()
+
+export default app;
