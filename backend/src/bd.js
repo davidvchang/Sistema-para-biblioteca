@@ -8,7 +8,10 @@
     const connectionString = process.env.POSTGRESQL_URI
 
     export const pool = new Pool({
-        connectionString: connectionString
+        connectionString: connectionString,
+        ssl: {
+            rejectUnauthorized: false
+        }
     })
 
     export const openConnection = async () => {
