@@ -12,7 +12,11 @@ app.set('port', process.env.PORT || 4000)
 
 app.use(morgan("dev"))
 app.use(express.json())
-app.use(cors());
+app.use(cors({
+    origin: "https://sistema-para-biblioteca.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.use("/api/libros", BooksRoutes)
 app.use("/api/usuarios", UsersRoutes)
